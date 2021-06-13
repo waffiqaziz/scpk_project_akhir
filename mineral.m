@@ -76,9 +76,9 @@ varargout{1} = handles.output;
 % tampilkan dataset
 set(handles.uitable1,'data',read_dataset('Minerals_Database.csv','C:J'));
 
-% 4	5.7500	1	3.8800	3	2.5250	0.2130	0 -> Anatase
-sample = [4	5.7500 1 3.8800	3 2.5250 0.2130	0];
-k = 3;
+% 2.0	2.0	2.0	1.895	4.0	1.4769999999999999	0.0	14.0 -> Melanterite
+sample = [2	2 2	1.895 4 1.47699 0 14];
+k = 1;
 
 % ambil data yang diperlukan yaitu kolom 3-6
 range = detectImportOptions('Minerals_Database.csv');
