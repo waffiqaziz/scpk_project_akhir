@@ -118,20 +118,11 @@ group = readmatrix('Minerals_Database.csv',range);
     classify = predict(class, sample);
     disp(classify)
 
-% metode correlation
-    disp("CORRELATION METHOD");
+% metode manhattan
+    disp("CITYBLOCK (MANHATTAN) METHOD");
     tic 
     class = fitcknn(training, group, 'NumNeighbors', k,... 
-            'Distance','correlation'); 
-    toc
-    classify = predict(class, sample);
-    disp(classify)
-    
-% metode cosine
-    disp("COSINE METHOD");
-    tic 
-    class = fitcknn(training, group, 'NumNeighbors', k,... 
-            'Distance','cosine'); 
+            'Distance','cityblock'); 
     toc
     classify = predict(class, sample);
     disp(classify)
@@ -140,7 +131,6 @@ classify = predict(class, sample);
 
 % Tampilkan Hasil
 set(handles.textResult, 'string', classify);
-
 
 
 
