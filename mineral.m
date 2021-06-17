@@ -22,7 +22,7 @@ function varargout = mineral(varargin)
 
 % Edit the above text to modify the response to help mineral
 
-% Last Modified by GUIDE v2.5 10-Jun-2021 11:26:33
+% Last Modified by GUIDE v2.5 14-Jun-2021 16:37:30
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -73,64 +73,82 @@ function varargout = mineral_OutputFcn(hObject, eventdata, handles)
 
 % Get default command line output from handles structure
 varargout{1} = handles.output;
+
 % tampilkan dataset
 set(handles.uitable1,'data',read_dataset('Minerals_Database.csv','C:J'));
-
-% 2.0	2.0	2.0	1.895	4.0	1.4769999999999999	0.0	14.0 -> Melanterite
-sample = [2	2 2	1.895 4 1.47699 0 14];
 k = 1;
 
-% ambil data yang diperlukan yaitu kolom 3-6
+% ambil data yang diperlukan yaitu kolom 3-10
 range = detectImportOptions('Minerals_Database.csv');
 range.SelectedVariableNames = (3:10);
 training = readmatrix('Minerals_Database.csv',range);
 
-% ambil data untuk spesies mineral yaitu kolom pertama
+% ambil data untuk jenis mineral yaitu kolom kedua
 range = detectImportOptions('Minerals_Database.csv');
 range.SelectedVariableNames = (2);
 group = readmatrix('Minerals_Database.csv',range);
 
 % ----------------------METODE KNN---------------------
-% metode euclidean
-    disp("EUCLIDEAN METHOD (default method)");
-    tic 
-    class = fitcknn(training, group, 'NumNeighbors', k); 
-    toc
-    classify = predict(class, sample);
-    disp(classify)
-
-% metode minskowski
-    disp("MINSKOWSKI METHOD");
-    tic 
-    class = fitcknn(training, group, 'NumNeighbors', k,... 
-            'NSMethod','exhaustive','Distance','minkowski',...
-            'Standardize',1); 
-    toc
-    classify = predict(class, sample);
-    disp(classify)
-
-% metode chebychev
-    disp("CHEBYCHEV METHOD");
-    tic 
-    class = fitcknn(training, group, 'NumNeighbors', k,... 
-            'Distance','chebychev'); 
-    toc
-    classify = predict(class, sample);
-    disp(classify)
-
-% metode manhattan
-    disp("CITYBLOCK (MANHATTAN) METHOD");
-    tic 
-    class = fitcknn(training, group, 'NumNeighbors', k,... 
-            'Distance','cityblock'); 
-    toc
-    classify = predict(class, sample);
-    disp(classify)
-    
-classify = predict(class, sample);
-
-% Tampilkan Hasil
-set(handles.textResult, 'string', classify);
+%     % metode euclidean
+%         disp("EUCLIDEAN METHOD (default method)");
+%         tic 
+%         class = fitcknn(training, group, 'NumNeighbors', k); 
+%         toc
+%         classify = predict(class, sample);
+%         disp(classify)
+% 
+%     % metode minskowski
+%         disp("MINSKOWSKI METHOD");
+%         tic 
+%         class = fitcknn(training, group, 'NumNeighbors', k,... 
+%                 'NSMethod','exhaustive','Distance','minkowski',...
+%                 'Standardize',1); 
+%         toc
+%         classify = predict(class, sample);
+%         disp(classify)
+% 
+%     % metode chebychev
+%         disp("CHEBYCHEV METHOD");
+%         tic 
+%         class = fitcknn(training, group, 'NumNeighbors', k,... 
+%                 'Distance','chebychev'); 
+%         toc
+%         classify = predict(class, sample);
+%         disp(classify)
+% 
+%     % metode manhattan
+%         disp("CITYBLOCK (MANHATTAN) METHOD");
+%         tic 
+%         class = fitcknn(training, group, 'NumNeighbors', k,... 
+%                 'Distance','cityblock'); 
+%         toc
+%         classify = predict(class, sample);
+%         disp(classify)
+% 
+%     classify = predict(class, sample);
+% 
+%     % metode jaccard
+%         disp("JACCARD METHOD");
+%         tic 
+%         class = fitcknn(training, group, 'NumNeighbors', k,... 
+%                 'Distance','jaccard'); 
+%         toc
+%         classify = predict(class, sample);
+%         disp(classify)
+% 
+%     classify = predict(class, sample);
+% 
+%     % latihan
+% 
+%     % disp("BEST");
+%     % best = fitcknn(training,group,'OptimizeHyperparameters','auto',...
+%     %     'HyperparameterOptimizationOptions',...
+%     %     struct('AcquisitionFunctionName','expected-improvement-plus'))
+%     % classify = predict(class, sample);
+%     %     disp(classify)
+% 
+%     % Tampilkan Hasil
+%     set(handles.textResult, 'string', classify);
 
 
 
@@ -164,30 +182,64 @@ function bClassify_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 %  input user simpan di variabel
-cl = str2double(get (handles.editCL, 'string'));
-cd = str2double(get (handles.editCD, 'string'));
-fl = str2double(get (handles.editFL, 'string'));
-bm = str2double(get (handles.editBM, 'string'));
-k = str2double(get (handles.editK, 'string'));
+rd = handles.rd;
+mh = str2double(get (handles.editMH, 'string'));
+dy = str2double(get (handles.editDY, 'string'));
+sg = str2double(get (handles.editSG, 'string'));
+o = str2double(get (handles.editO, 'string'));
+ri = str2double(get (handles.editRI, 'string'));
+dp = str2double(get (handles.editDP, 'string'));
+h = str2double(get (handles.editH, 'string'));
 
-sample = [cl cd fl bm];
+sample = [rd mh dy sg o ri dp h];
 
-% ambil data yang diperlukan yaitu kolom 3-6
-range = detectImportOptions('Minerals_Database.csv');
-range.SelectedVariableNames = (3:10);
-training = readmatrix('Minerals_Database.csv',range);
-
-% ambil data untuk spesies mineral yaitu kolom pertama
-range = detectImportOptions('Minerals_Database.csv');
-range.SelectedVariableNames = (1);
-group = readmatrix('Minerals_Database.csv',range);
-
-class = fitcknn(training, group, 'NumNeighbors', k);
-classify = predict(class, sample);
+% READ MATRIX
+    k = 1;
+    % ambil data yang diperlukan yaitu kolom 3-6
+    range = detectImportOptions('Minerals_Database.csv');
+    range.SelectedVariableNames = (3:10);
+    training = readmatrix('Minerals_Database.csv',range);
+    
+    % ambil data untuk jenis mineral yaitu kolom kedua
+    range = detectImportOptions('Minerals_Database.csv');
+    range.SelectedVariableNames = (2);
+    group = readmatrix('Minerals_Database.csv',range);
+    
+% READTABLE
+%     k = 1;
+%     % ambil data yang diperlukan yaitu kolom 3-6
+%     training = read_dataset('Minerals_Database.csv','C:J');
+% 
+%     % ambil data untuk jenis mineral yaitu kolom kedua
+%     group = read_dataset('Minerals_Database.csv','B:B');
+%     class = fitcknn(training, group, 'NumNeighbors', k);
+%     classify = predict(class, sample);
 
 set(handles.textResult, 'string', classify);
 
+% set radio button
+%     rd = handles.rd;
+    % if rd == 1
+    %     set(handles.textResult, 'string', 'Trilinic');   
+    % elseif rd == 2
+    %     set(handles.textResult, 'string', 'Monoclinic');
+    % elseif rd == 3
+    %     set(handles.textResult, 'string', 'Orthorhombic');
+    % elseif rd == 4
+    %     set(handles.textResult, 'string', 'Tetragonal');
+    % elseif rd == 5
+    %     set(handles.textResult, 'string', 'Hexagonal');
+    % elseif rd == 6
+    %     set(handles.textResult, 'string', 'Trigonal');
+    % elseif rd == 7
+    %     set(handles.textResult, 'string', 'Cubic');
+    % elseif rd == 8
+    %     set(handles.textResult, 'string', 'Amorphous');
+    % end
 
+
+
+    
 % --- Executes on button press in pushbutton4.
 function pushbutton4_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton4 (see GCBO)
@@ -195,25 +247,25 @@ function pushbutton4_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % reset kolom input
-set(handles.editCL,'string','');
-set(handles.editCD,'string','');
-set(handles.editFL,'string','');
-set(handles.editBM,'string','');
-set(handles.editK,'string','');
+set(handles.editMH,'string','');
+set(handles.editDY,'string','');
+set(handles.editSG,'string','');
+set(handles.editO,'string','');
+set(handles.editRI,'string','');
 
 
-function editCL_Callback(hObject, eventdata, handles)
-% hObject    handle to editCL (see GCBO)
+function editMH_Callback(hObject, eventdata, handles)
+% hObject    handle to editMH (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of editCL as text
-%        str2double(get(hObject,'String')) returns contents of editCL as a double
+% Hints: get(hObject,'String') returns contents of editMH as text
+%        str2double(get(hObject,'String')) returns contents of editMH as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function editCL_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to editCL (see GCBO)
+function editMH_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to editMH (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -224,18 +276,18 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-function editCD_Callback(hObject, eventdata, handles)
-% hObject    handle to editCD (see GCBO)
+function editDY_Callback(hObject, eventdata, handles)
+% hObject    handle to editDY (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of editCD as text
-%        str2double(get(hObject,'String')) returns contents of editCD as a double
+% Hints: get(hObject,'String') returns contents of editDY as text
+%        str2double(get(hObject,'String')) returns contents of editDY as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function editCD_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to editCD (see GCBO)
+function editDY_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to editDY (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -246,18 +298,18 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-function editFL_Callback(hObject, eventdata, handles)
-% hObject    handle to editFL (see GCBO)
+function editSG_Callback(hObject, eventdata, handles)
+% hObject    handle to editSG (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of editFL as text
-%        str2double(get(hObject,'String')) returns contents of editFL as a double
+% Hints: get(hObject,'String') returns contents of editSG as text
+%        str2double(get(hObject,'String')) returns contents of editSG as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function editFL_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to editFL (see GCBO)
+function editSG_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to editSG (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -268,18 +320,18 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-function editBM_Callback(hObject, eventdata, handles)
-% hObject    handle to editBM (see GCBO)
+function editO_Callback(hObject, eventdata, handles)
+% hObject    handle to editO (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of editBM as text
-%        str2double(get(hObject,'String')) returns contents of editBM as a double
+% Hints: get(hObject,'String') returns contents of editO as text
+%        str2double(get(hObject,'String')) returns contents of editO as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function editBM_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to editBM (see GCBO)
+function editO_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to editO (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -290,18 +342,18 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-function editK_Callback(hObject, eventdata, handles)
-% hObject    handle to editK (see GCBO)
+function editRI_Callback(hObject, eventdata, handles)
+% hObject    handle to editRI (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of editK as text
-%        str2double(get(hObject,'String')) returns contents of editK as a double
+% Hints: get(hObject,'String') returns contents of editRI as text
+%        str2double(get(hObject,'String')) returns contents of editRI as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function editK_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to editK (see GCBO)
+function editRI_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to editRI (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -328,6 +380,14 @@ function radiobutton1_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of radiobutton1
+set(handles.radiobutton2,'Value',0);set(handles.radiobutton6,'Value',0);
+set(handles.radiobutton3,'Value',0);set(handles.radiobutton7,'Value',0);
+set(handles.radiobutton4,'Value',0);set(handles.radiobutton8,'Value',0);
+set(handles.radiobutton5,'Value',0);
+
+rd = 1;
+handles.rd = rd;
+guidata(hObject,handles);
 
 
 % --- Executes on button press in radiobutton2.
@@ -337,21 +397,27 @@ function radiobutton2_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of radiobutton2
+set(handles.radiobutton1,'Value',0);set(handles.radiobutton6,'Value',0);
+set(handles.radiobutton3,'Value',0);set(handles.radiobutton7,'Value',0);
+set(handles.radiobutton4,'Value',0);set(handles.radiobutton8,'Value',0);
+set(handles.radiobutton5,'Value',0);
+rd = 2;
+handles.rd = rd;
+guidata(hObject,handles);
 
 
-
-function edit6_Callback(hObject, eventdata, handles)
-% hObject    handle to edit6 (see GCBO)
+function editDP_Callback(hObject, eventdata, handles)
+% hObject    handle to editDP (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit6 as text
-%        str2double(get(hObject,'String')) returns contents of edit6 as a double
+% Hints: get(hObject,'String') returns contents of editDP as text
+%        str2double(get(hObject,'String')) returns contents of editDP as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function edit6_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit6 (see GCBO)
+function editDP_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to editDP (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -363,18 +429,18 @@ end
 
 
 
-function edit7_Callback(hObject, eventdata, handles)
-% hObject    handle to edit7 (see GCBO)
+function editH_Callback(hObject, eventdata, handles)
+% hObject    handle to editH (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit7 as text
-%        str2double(get(hObject,'String')) returns contents of edit7 as a double
+% Hints: get(hObject,'String') returns contents of editH as text
+%        str2double(get(hObject,'String')) returns contents of editH as a double
 
 
 % --- Executes during object creation, after setting all properties.
-function edit7_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit7 (see GCBO)
+function editH_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to editH (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -392,43 +458,58 @@ function radiobutton3_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of radiobutton3
+set(handles.radiobutton3,'Value',0);
+rd = 3;
+handles.rd = rd;
+guidata(hObject,handles);
 
-
-% --- Executes on button press in radiobutton4.
+% --- Executes on button press in radiobutton3.
 function radiobutton4_Callback(hObject, eventdata, handles)
-% hObject    handle to radiobutton4 (see GCBO)
+% hObject    handle to radiobutton3 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hint: get(hObject,'Value') returns toggle state of radiobutton4
-
-
-% --- Executes on button press in radiobutton5.
-function radiobutton5_Callback(hObject, eventdata, handles)
-% hObject    handle to radiobutton5 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of radiobutton5
-
+% Hint: get(hObject,'Value') returns toggle state of radiobutton3
+set(handles.radiobutton4,'Value',0);
+rd = 4;
+handles.rd = rd;
+guidata(hObject,handles);
 
 % --- Executes on button press in radiobutton6.
-function radiobutton6_Callback(hObject, eventdata, handles)
+function radiobutton5_Callback(hObject, eventdata, handles)
 % hObject    handle to radiobutton6 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of radiobutton6
+set(handles.radiobutton5,'Value',0);
+rd = 5;
+handles.rd = rd;
+guidata(hObject,handles);
 
-
-% --- Executes on button press in radiobutton7.
-function radiobutton7_Callback(hObject, eventdata, handles)
-% hObject    handle to radiobutton7 (see GCBO)
+% --- Executes on button press in radiobutton5.
+function radiobutton6_Callback(hObject, eventdata, handles)
+% hObject    handle to radiobutton5 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hint: get(hObject,'Value') returns toggle state of radiobutton7
+% Hint: get(hObject,'Value') returns toggle state of radiobutton5
+set(handles.radiobutton6,'Value',0);
+rd = 6;
+handles.rd = rd;
+guidata(hObject,handles);
 
+% --- Executes on button press in radiobutton6.
+function radiobutton7_Callback(hObject, eventdata, handles)
+% hObject    handle to radiobutton6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of radiobutton6
+set(handles.radiobutton7,'Value',0);
+rd = 7;
+handles.rd = rd;
+guidata(hObject,handles);
 
 % --- Executes on button press in radiobutton8.
 function radiobutton8_Callback(hObject, eventdata, handles)
@@ -437,3 +518,7 @@ function radiobutton8_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of radiobutton8
+set(handles.radiobutton8,'Value',0);
+rd = 8;
+handles.rd = rd;
+guidata(hObject,handles);
