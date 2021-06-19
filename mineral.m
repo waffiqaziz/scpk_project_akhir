@@ -74,22 +74,31 @@ function varargout = mineral_OutputFcn(hObject, eventdata, handles)
 % Get default command line output from handles structure
 varargout{1} = handles.output;
 
-% tampilkan dataset
-set(handles.uitable1,'data',read_dataset('Minerals_Database.csv','C:J'));
-k = 1;
+%% tampilkan dataset
+    %% menggunakan readtable
+        % set(handles.uitable1,'data',read_dataset('Minerals_Database.csv','C:J'));
 
-% ambil data yang diperlukan yaitu kolom 3-10
-range = detectImportOptions('Minerals_Database.csv');
-range.SelectedVariableNames = (3:10);
-training = readmatrix('Minerals_Database.csv',range);
+    %% menggunakan read matrix
+        range = detectImportOptions('Minerals_Database.csv');
+        range.SelectedVariableNames = (3:10);
+        data = readmatrix('Minerals_Database.csv',range);
+        set(handles.uitable1,'data',data);
 
-% ambil data untuk jenis mineral yaitu kolom kedua
-range = detectImportOptions('Minerals_Database.csv');
-range.SelectedVariableNames = (2);
-group = readmatrix('Minerals_Database.csv',range);
+%% uji coba  
+    % k = 1;
+    % sample = [0	0 0	0 0 0 0	16];
+    % % ambil data yang diperlukan yaitu kolom 3-10
+    % range = detectImportOptions('Minerals_Database.csv');
+    % range.SelectedVariableNames = (3:10);
+    % training = readmatrix('Minerals_Database.csv',range);
+    % 
+    % % ambil data untuk jenis mineral yaitu kolom kedua
+    % range = detectImportOptions('Minerals_Database.csv');
+    % range.SelectedVariableNames = (2);
+    % group = readmatrix('Minerals_Database.csv',range);
 
-% ----------------------METODE KNN---------------------
-%     % metode euclidean
+%% ----------------------METODE KNN---------------------
+%%     % metode euclidean
 %         disp("EUCLIDEAN METHOD (default method)");
 %         tic 
 %         class = fitcknn(training, group, 'NumNeighbors', k); 
@@ -97,7 +106,7 @@ group = readmatrix('Minerals_Database.csv',range);
 %         classify = predict(class, sample);
 %         disp(classify)
 % 
-%     % metode minskowski
+%%     % metode minskowski
 %         disp("MINSKOWSKI METHOD");
 %         tic 
 %         class = fitcknn(training, group, 'NumNeighbors', k,... 
@@ -107,7 +116,7 @@ group = readmatrix('Minerals_Database.csv',range);
 %         classify = predict(class, sample);
 %         disp(classify)
 % 
-%     % metode chebychev
+%%     % metode chebychev
 %         disp("CHEBYCHEV METHOD");
 %         tic 
 %         class = fitcknn(training, group, 'NumNeighbors', k,... 
@@ -116,7 +125,7 @@ group = readmatrix('Minerals_Database.csv',range);
 %         classify = predict(class, sample);
 %         disp(classify)
 % 
-%     % metode manhattan
+%%     % metode manhattan
 %         disp("CITYBLOCK (MANHATTAN) METHOD");
 %         tic 
 %         class = fitcknn(training, group, 'NumNeighbors', k,... 
@@ -127,7 +136,7 @@ group = readmatrix('Minerals_Database.csv',range);
 % 
 %     classify = predict(class, sample);
 % 
-%     % metode jaccard
+%%     % metode jaccard
 %         disp("JACCARD METHOD");
 %         tic 
 %         class = fitcknn(training, group, 'NumNeighbors', k,... 
@@ -136,7 +145,7 @@ group = readmatrix('Minerals_Database.csv',range);
 %         classify = predict(class, sample);
 %         disp(classify)
 % 
-%     classify = predict(class, sample);
+%%     classify = predict(class, sample);
 % 
 %     % latihan
 % 
@@ -147,7 +156,7 @@ group = readmatrix('Minerals_Database.csv',range);
 %     % classify = predict(class, sample);
 %     %     disp(classify)
 % 
-%     % Tampilkan Hasil
+%%     % Tampilkan Hasil
 %     set(handles.textResult, 'string', classify);
 
 
@@ -181,42 +190,47 @@ function bClassify_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-%  input user simpan di variabel
-rd = handles.rd;
-mh = str2double(get (handles.editMH, 'string'));
-dy = str2double(get (handles.editDY, 'string'));
-sg = str2double(get (handles.editSG, 'string'));
-o = str2double(get (handles.editO, 'string'));
-ri = str2double(get (handles.editRI, 'string'));
-dp = str2double(get (handles.editDP, 'string'));
-h = str2double(get (handles.editH, 'string'));
+%%  input user simpan di variabel
+    rd = handles.rd;
+    mh = str2double(get (handles.editMH, 'string'));
+    dy = str2double(get (handles.editDY, 'string'));
+    sg = str2double(get (handles.editSG, 'string'));
+    o = str2double(get (handles.editO, 'string'));
+    ri = str2double(get (handles.editRI, 'string'));
+    dp = str2double(get (handles.editDP, 'string'));
+    h = str2double(get (handles.editH, 'string'));
 
-sample = [rd mh dy sg o ri dp h];
+    sample = [rd mh dy sg o ri dp h];
 
-% READ MATRIX
+%% READ MATRIX (fixed)
     k = 1;
-    % ambil data yang diperlukan yaitu kolom 3-6
+    % ambil data yang diperlukan yaitu kolom 3-10
     range = detectImportOptions('Minerals_Database.csv');
     range.SelectedVariableNames = (3:10);
     training = readmatrix('Minerals_Database.csv',range);
-    
+
     % ambil data untuk jenis mineral yaitu kolom kedua
     range = detectImportOptions('Minerals_Database.csv');
     range.SelectedVariableNames = (2);
     group = readmatrix('Minerals_Database.csv',range);
+    class = fitcknn(training, group, 'NumNeighbors', k); 
+    classify = predict(class, sample);
     
-% READTABLE
+%% READTABLE (not fix)
 %     k = 1;
 %     % ambil data yang diperlukan yaitu kolom 3-6
 %     training = read_dataset('Minerals_Database.csv','C:J');
-% 
+%     training = cell2mat(training);
 %     % ambil data untuk jenis mineral yaitu kolom kedua
-%     group = read_dataset('Minerals_Database.csv','B:B');
+%     group = read_dataset('Minerals_Database.csv','B2:B3112');
+%     group = cell2mat(group);
 %     class = fitcknn(training, group, 'NumNeighbors', k);
 %     classify = predict(class, sample);
 
-set(handles.textResult, 'string', classify);
+%% tampilkan dalam tabel
+    set(handles.textResult,'string', classify);
 
+%% uji radio button
 % set radio button
 %     rd = handles.rd;
     % if rd == 1
@@ -246,12 +260,14 @@ function pushbutton4_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% reset kolom input
-set(handles.editMH,'string','');
-set(handles.editDY,'string','');
-set(handles.editSG,'string','');
-set(handles.editO,'string','');
-set(handles.editRI,'string','');
+%% reset kolom input
+    set(handles.editMH,'string','');
+    set(handles.editDY,'string','');
+    set(handles.editSG,'string','');
+    set(handles.editO,'string','');
+    set(handles.editRI,'string','');
+    set(handles.editDP,'string','');
+    set(handles.editH,'string','');
 
 
 function editMH_Callback(hObject, eventdata, handles)
@@ -401,6 +417,7 @@ set(handles.radiobutton1,'Value',0);set(handles.radiobutton6,'Value',0);
 set(handles.radiobutton3,'Value',0);set(handles.radiobutton7,'Value',0);
 set(handles.radiobutton4,'Value',0);set(handles.radiobutton8,'Value',0);
 set(handles.radiobutton5,'Value',0);
+
 rd = 2;
 handles.rd = rd;
 guidata(hObject,handles);
@@ -458,7 +475,11 @@ function radiobutton3_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of radiobutton3
-set(handles.radiobutton3,'Value',0);
+set(handles.radiobutton1,'Value',0);set(handles.radiobutton6,'Value',0);
+set(handles.radiobutton2,'Value',0);set(handles.radiobutton7,'Value',0);
+set(handles.radiobutton4,'Value',0);set(handles.radiobutton8,'Value',0);
+set(handles.radiobutton5,'Value',0);
+
 rd = 3;
 handles.rd = rd;
 guidata(hObject,handles);
@@ -470,7 +491,11 @@ function radiobutton4_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of radiobutton3
-set(handles.radiobutton4,'Value',0);
+set(handles.radiobutton1,'Value',0);set(handles.radiobutton6,'Value',0);
+set(handles.radiobutton3,'Value',0);set(handles.radiobutton7,'Value',0);
+set(handles.radiobutton2,'Value',0);set(handles.radiobutton8,'Value',0);
+set(handles.radiobutton5,'Value',0);
+
 rd = 4;
 handles.rd = rd;
 guidata(hObject,handles);
@@ -482,7 +507,11 @@ function radiobutton5_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of radiobutton6
-set(handles.radiobutton5,'Value',0);
+set(handles.radiobutton1,'Value',0);set(handles.radiobutton6,'Value',0);
+set(handles.radiobutton3,'Value',0);set(handles.radiobutton7,'Value',0);
+set(handles.radiobutton4,'Value',0);set(handles.radiobutton8,'Value',0);
+set(handles.radiobutton2,'Value',0);
+
 rd = 5;
 handles.rd = rd;
 guidata(hObject,handles);
@@ -494,7 +523,11 @@ function radiobutton6_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of radiobutton5
-set(handles.radiobutton6,'Value',0);
+set(handles.radiobutton1,'Value',0);set(handles.radiobutton2,'Value',0);
+set(handles.radiobutton3,'Value',0);set(handles.radiobutton7,'Value',0);
+set(handles.radiobutton4,'Value',0);set(handles.radiobutton8,'Value',0);
+set(handles.radiobutton5,'Value',0);
+
 rd = 6;
 handles.rd = rd;
 guidata(hObject,handles);
@@ -506,7 +539,11 @@ function radiobutton7_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of radiobutton6
-set(handles.radiobutton7,'Value',0);
+set(handles.radiobutton1,'Value',0);set(handles.radiobutton6,'Value',0);
+set(handles.radiobutton3,'Value',0);set(handles.radiobutton2,'Value',0);
+set(handles.radiobutton4,'Value',0);set(handles.radiobutton8,'Value',0);
+set(handles.radiobutton5,'Value',0);
+
 rd = 7;
 handles.rd = rd;
 guidata(hObject,handles);
@@ -518,7 +555,11 @@ function radiobutton8_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of radiobutton8
-set(handles.radiobutton8,'Value',0);
+set(handles.radiobutton1,'Value',0);set(handles.radiobutton6,'Value',0);
+set(handles.radiobutton3,'Value',0);set(handles.radiobutton7,'Value',0);
+set(handles.radiobutton4,'Value',0);set(handles.radiobutton2,'Value',0);
+set(handles.radiobutton5,'Value',0);
+
 rd = 8;
 handles.rd = rd;
 guidata(hObject,handles);
