@@ -52,8 +52,7 @@ function mineral_OpeningFcn(hObject, eventdata, handles, varargin)
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to mineral (see VARARGIN)
 
-% CLEAR COMMAND LINE
-clc 
+clc
 
 % Choose default command line output for mineral
 handles.output = hObject;
@@ -75,18 +74,18 @@ function varargout = mineral_OutputFcn(hObject, eventdata, handles)
 % Get default command line output from handles structure
 varargout{1} = handles.output;
 
-%% TAMPILKAN DATASET
-    %% MENGGUNAKAN READTABLE
-        set(handles.uitable1,'data',read_dataset('Minerals_Database.csv','B:J'));
+%% tampilkan dataset
+    %% menggunakan readtable
+        % set(handles.uitable1,'data',read_dataset('Minerals_Database.csv','C:J'));
 
-    %% MENGGUNAKAN READ MATRIX
-%         range = detectImportOptions('Minerals_Database.csv');
-%         range.SelectedVariableNames = (2:10);
-%         data = readtable('Minerals_Database.csv',range);
-%         data1 = table2array(data);
-%         set(handles.uitable1,'data',data1);
+    %% menggunakan read matrix
+        range = detectImportOptions('Minerals_Database.csv');
+        range.SelectedVariableNames = (3:10);
+        data = readtable('Minerals_Database.csv',range);
+        data1 = table2array(data);
+        set(handles.uitable1,'data',data1);
 
-%% UJI COBA  
+%% uji coba  
     % k = 1;
     % sample = [0 0 0 0 0 0 0 16];
     % % ambil data yang diperlukan yaitu kolom 3-10
@@ -100,7 +99,7 @@ varargout{1} = handles.output;
     % group = readmatrix('Minerals_Database.csv',range);
 
 %% ----------------------METODE KNN---------------------
-%%     METODE EUCLIDEAN
+%%     % metode euclidean
 %         disp("EUCLIDEAN METHOD (default method)");
 %         tic 
 %         class = fitcknn(training, group, 'NumNeighbors', k); 
@@ -108,7 +107,7 @@ varargout{1} = handles.output;
 %         classify = predict(class, sample);
 %         disp(classify)
 % 
-%%     METODE MINSKOWSKI
+%%     % metode minskowski
 %         disp("MINSKOWSKI METHOD");
 %         tic 
 %         class = fitcknn(training, group, 'NumNeighbors', k,... 
@@ -118,7 +117,7 @@ varargout{1} = handles.output;
 %         classify = predict(class, sample);
 %         disp(classify)
 % 
-%%     METODE CHEBYCHEV
+%%     % metode chebychev
 %         disp("CHEBYCHEV METHOD");
 %         tic 
 %         class = fitcknn(training, group, 'NumNeighbors', k,... 
@@ -127,7 +126,7 @@ varargout{1} = handles.output;
 %         classify = predict(class, sample);
 %         disp(classify)
 % 
-%%     METODE MANHATTAN
+%%     % metode manhattan
 %         disp("CITYBLOCK (MANHATTAN) METHOD");
 %         tic 
 %         class = fitcknn(training, group, 'NumNeighbors', k,... 
@@ -135,9 +134,10 @@ varargout{1} = handles.output;
 %         toc
 %         classify = predict(class, sample);
 %         disp(classify)
-%         classify = predict(class, sample);
 % 
-%%     METODE JACCARD
+%     classify = predict(class, sample);
+% 
+%%     % metode jaccard
 %         disp("JACCARD METHOD");
 %         tic 
 %         class = fitcknn(training, group, 'NumNeighbors', k,... 
@@ -145,9 +145,10 @@ varargout{1} = handles.output;
 %         toc
 %         classify = predict(class, sample);
 %         disp(classify)
-%         classify = predict(class, sample);
 % 
-%%    BEST METHOD
+%%     classify = predict(class, sample);
+% 
+%     % latihan
 % 
 %     % disp("BEST");
 %     % best = fitcknn(training,group,'OptimizeHyperparameters','auto',...
@@ -156,8 +157,8 @@ varargout{1} = handles.output;
 %     % classify = predict(class, sample);
 %     %     disp(classify)
 % 
-%%    TAMPILKAN HASIL
-%       set(handles.textResult, 'string', classify);
+%%     % Tampilkan Hasil
+%     set(handles.textResult, 'string', classify);
 
 
 
@@ -171,7 +172,7 @@ function bShowTable_Callback(hObject, eventdata, handles)
 handles.uitable1.Visible = 'on';
 
 % menampilkan data tabel
-set(handles.uitable1,'data',read_dataset('Minerals_Database.csv','B:J'));
+set(handles.uitable1,'data',read_dataset('Minerals_Database.csv','C:J'));
 
 
 % --- Executes on button press in bHideTable.
@@ -190,7 +191,7 @@ function bClassify_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-%%  INPUT USER SIMPAN DI VARIABEL
+%%  input user simpan di variabel
     rd = handles.rd;
     mh = str2double(get (handles.editMH, 'string'));
     dy = handles.dy;
@@ -227,10 +228,10 @@ function bClassify_Callback(hObject, eventdata, handles)
 %     class = fitcknn(training, group, 'NumNeighbors', k);
 %     classify = predict(class, sample);
 
-%% TAMPILKAN HASIL
+%% tampilkan dalam tabel
     set(handles.textResult,'string', classify);
 
-%% UJI RADIO BUTTON
+%% uji radio button
 % set radio button
 %     rd = handles.rd;
     % if rd == 1
@@ -260,7 +261,7 @@ function pushbutton4_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-%% RESET KOLOM INPUT
+%% reset kolom input
     set(handles.editMH,'string','');
     set(handles.editSG,'string','');
     set(handles.editRI,'string','');
@@ -311,7 +312,7 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 
-%% UJI RADIO BUTTON
+%% uji radio button
 % set radio button
 %     dy = handles.dy;
     % if dy == 1
@@ -366,7 +367,7 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 
-%% UJI RADIO BUTTON
+%% uji radio button
 % set radio button
 %     o = handles.o;
     % if o == 1
