@@ -87,20 +87,20 @@ varargout{1} = handles.output;
 %         set(handles.uitable1,'data',data1);
 
 %% UJI COBA  
-    % k = 1;
-    % sample = [0 0 0 0 0 0 0 16];
-    % % ambil data yang diperlukan yaitu kolom 3-10
-    % range = detectImportOptions('Minerals_Database.csv');
-    % range.SelectedVariableNames = (3:10);
-    % training = readmatrix('Minerals_Database.csv',range);
-    % 
-    % % ambil data untuk jenis mineral yaitu kolom kedua
-    % range = detectImportOptions('Minerals_Database.csv');
-    % range.SelectedVariableNames = (2);
-    % group = readmatrix('Minerals_Database.csv',range);
+%     k = 1;
+%     sample = [2	3.5000	2	2.5700	4	1.5460	0	1];
+%     % ambil data yang diperlukan yaitu kolom 3-10
+%     range = detectImportOptions('Minerals_Database.csv');
+%     range.SelectedVariableNames = (3:10);
+%     training = readmatrix('Minerals_Database.csv',range);
+%     
+%     % ambil data untuk jenis mineral yaitu kolom kedua
+%     range = detectImportOptions('Minerals_Database.csv');
+%     range.SelectedVariableNames = (2);
+%     group = readmatrix('Minerals_Database.csv',range);
 
 %% ----------------------METODE KNN---------------------
-%%     METODE EUCLIDEAN
+% %%     METODE EUCLIDEAN
 %         disp("EUCLIDEAN METHOD (default method)");
 %         tic 
 %         class = fitcknn(training, group, 'NumNeighbors', k); 
@@ -108,7 +108,7 @@ varargout{1} = handles.output;
 %         classify = predict(class, sample);
 %         disp(classify)
 % 
-%%     METODE MINSKOWSKI
+% %%     METODE MINSKOWSKI
 %         disp("MINSKOWSKI METHOD");
 %         tic 
 %         class = fitcknn(training, group, 'NumNeighbors', k,... 
@@ -118,7 +118,7 @@ varargout{1} = handles.output;
 %         classify = predict(class, sample);
 %         disp(classify)
 % 
-%%     METODE CHEBYCHEV
+% %%     METODE CHEBYCHEV
 %         disp("CHEBYCHEV METHOD");
 %         tic 
 %         class = fitcknn(training, group, 'NumNeighbors', k,... 
@@ -126,8 +126,8 @@ varargout{1} = handles.output;
 %         toc
 %         classify = predict(class, sample);
 %         disp(classify)
-% 
-%%     METODE MANHATTAN
+
+% %%     METODE MANHATTAN
 %         disp("CITYBLOCK (MANHATTAN) METHOD");
 %         tic 
 %         class = fitcknn(training, group, 'NumNeighbors', k,... 
@@ -136,25 +136,14 @@ varargout{1} = handles.output;
 %         classify = predict(class, sample);
 %         disp(classify)
 %         classify = predict(class, sample);
-% 
-%%     METODE JACCARD
-%         disp("JACCARD METHOD");
-%         tic 
-%         class = fitcknn(training, group, 'NumNeighbors', k,... 
-%                 'Distance','jaccard'); 
-%         toc
-%         classify = predict(class, sample);
-%         disp(classify)
-%         classify = predict(class, sample);
-% 
 %%    BEST METHOD
 % 
-%     % disp("BEST");
-%     % best = fitcknn(training,group,'OptimizeHyperparameters','auto',...
-%     %     'HyperparameterOptimizationOptions',...
-%     %     struct('AcquisitionFunctionName','expected-improvement-plus'))
-%     % classify = predict(class, sample);
-%     %     disp(classify)
+%     disp("BEST");
+%     best = fitcknn(training,group,'OptimizeHyperparameters','auto',...
+%         'HyperparameterOptimizationOptions',...
+%         struct('AcquisitionFunctionName','expected-improvement-plus'))
+%     classify = predict(class, sample);
+%         disp(classify)
 % 
 %%    TAMPILKAN HASIL
 %       set(handles.textResult, 'string', classify);
@@ -213,7 +202,8 @@ function bClassify_Callback(hObject, eventdata, handles)
     range = detectImportOptions('Minerals_Database.csv');
     range.SelectedVariableNames = (2);
     group = readtable('Minerals_Database.csv',range);
-    class = fitcknn(training, group, 'NumNeighbors', k); 
+    class = fitcknn(training, group, 'NumNeighbors', k,... 
+                'Distance','cityblock'); 
     classify = predict(class, sample);
     
 %% READTABLE (not fix)
@@ -622,7 +612,7 @@ function radiobutton11_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of radiobutton11
-set(handles.radiobutton10,'Value',0);set(handles.radiobutton11,'Value',0);
+set(handles.radiobutton10,'Value',0);set(handles.radiobutton9,'Value',0);
 
 dy = 3;
 handles.dy = dy;
