@@ -86,70 +86,6 @@ varargout{1} = handles.output;
 %         data1 = table2array(data);
 %         set(handles.uitable1,'data',data1);
 
-%% UJI COBA  
-%     k = 1;
-%     sample = [2	3.5000	2	2.5700	4	1.5460	0	1];
-%     % ambil data yang diperlukan yaitu kolom 3-10
-%     range = detectImportOptions('Minerals_Database.csv');
-%     range.SelectedVariableNames = (3:10);
-%     training = readmatrix('Minerals_Database.csv',range);
-%     
-%     % ambil data untuk jenis mineral yaitu kolom kedua
-%     range = detectImportOptions('Minerals_Database.csv');
-%     range.SelectedVariableNames = (2);
-%     group = readmatrix('Minerals_Database.csv',range);
-
-%% ----------------------METODE KNN---------------------
-% %%     METODE EUCLIDEAN
-%         disp("EUCLIDEAN METHOD (default method)");
-%         tic 
-%         class = fitcknn(training, group, 'NumNeighbors', k); 
-%         toc
-%         classify = predict(class, sample);
-%         disp(classify)
-% 
-% %%     METODE MINSKOWSKI
-%         disp("MINSKOWSKI METHOD");
-%         tic 
-%         class = fitcknn(training, group, 'NumNeighbors', k,... 
-%                 'NSMethod','exhaustive','Distance','minkowski',...
-%                 'Standardize',1); 
-%         toc
-%         classify = predict(class, sample);
-%         disp(classify)
-% 
-% %%     METODE CHEBYCHEV
-%         disp("CHEBYCHEV METHOD");
-%         tic 
-%         class = fitcknn(training, group, 'NumNeighbors', k,... 
-%                 'Distance','chebychev'); 
-%         toc
-%         classify = predict(class, sample);
-%         disp(classify)
-
-% %%     METODE MANHATTAN
-%         disp("CITYBLOCK (MANHATTAN) METHOD");
-%         tic 
-%         class = fitcknn(training, group, 'NumNeighbors', k,... 
-%                 'Distance','cityblock'); 
-%         toc
-%         classify = predict(class, sample);
-%         disp(classify)
-%         classify = predict(class, sample);
-%%    BEST METHOD
-% 
-%     disp("BEST");
-%     best = fitcknn(training,group,'OptimizeHyperparameters','auto',...
-%         'HyperparameterOptimizationOptions',...
-%         struct('AcquisitionFunctionName','expected-improvement-plus'))
-%     classify = predict(class, sample);
-%         disp(classify)
-% 
-%%    TAMPILKAN HASIL
-%       set(handles.textResult, 'string', classify);
-
-
-
 % --- Executes on button press in bShowTable.
 function bShowTable_Callback(hObject, eventdata, handles)
 % hObject    handle to bShowTable (see GCBO)
@@ -219,30 +155,6 @@ function bClassify_Callback(hObject, eventdata, handles)
 
 %% TAMPILKAN HASIL
     set(handles.textResult,'string', classify);
-
-%% UJI RADIO BUTTON
-% set radio button
-%     rd = handles.rd;
-    % if rd == 1
-    %     set(handles.textResult, 'string', 'Trilinic');   
-    % elseif rd == 2
-    %     set(handles.textResult, 'string', 'Monoclinic');
-    % elseif rd == 3
-    %     set(handles.textResult, 'string', 'Orthorhombic');
-    % elseif rd == 4
-    %     set(handles.textResult, 'string', 'Tetragonal');
-    % elseif rd == 5
-    %     set(handles.textResult, 'string', 'Hexagonal');
-    % elseif rd == 6
-    %     set(handles.textResult, 'string', 'Trigonal');
-    % elseif rd == 7
-    %     set(handles.textResult, 'string', 'Cubic');
-    % elseif rd == 8
-    %     set(handles.textResult, 'string', 'Amorphous');
-    % end
-
-
-
     
 % --- Executes on button press in pushbutton4.
 function pushbutton4_Callback(hObject, eventdata, handles)
@@ -301,17 +213,6 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 
-%% UJI RADIO BUTTON
-% set radio button
-%     dy = handles.dy;
-    % if dy == 1
-    %     set(handles.textResult, 'string', 'Opaque');   
-    % elseif dy == 2
-    %     set(handles.textResult, 'string', 'Translucent');
-    % elseif dy == 3
-    %     set(handles.textResult, 'string', 'Transparent');
-    % end
-
 
 function editSG_Callback(hObject, eventdata, handles)
 % hObject    handle to editSG (see GCBO)
@@ -355,20 +256,6 @@ function editO_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-
-%% UJI RADIO BUTTON
-% set radio button
-%     o = handles.o;
-    % if o == 1
-    %     set(handles.textResult, 'string', 'Anisotropic');   
-    % elseif o == 2
-    %     set(handles.textResult, 'string', 'Isotropic');
-    % elseif o == 3
-    %     set(handles.textResult, 'string', 'Uniaxial');
-    % elseif o == 4
-    %     set(handles.textResult, 'string', 'Biaxial');
-    % end
-
 
 function editRI_Callback(hObject, eventdata, handles)
 % hObject    handle to editRI (see GCBO)
